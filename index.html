@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zonas Bergamo</title>
 <style>
-body{font-family:sans-serif;background:#f1f5f9;margin:0;padding-bottom:30px}
+body{font-family:sans-serif;background:#f1f5f9;margin:0;padding-bottom:40px}
 .header{background:#1e40af;color:white;padding:16px}
 h1{margin:0 0 4px;font-size:1.3rem}
 .container{padding:16px;max-width:600px;margin:0 auto}
@@ -15,12 +15,13 @@ input,select,button{font-size:16px}
 .tab{flex:1;padding:10px 4px;text-align:center;background:white;border:2px solid #ddd;border-radius:8px;font-weight:bold;font-size:13px}
 .tab.active{border-color:#1e40af;background:#eff6ff;color:#1e40af}
 .add{background:white;border-radius:12px;padding:14px;margin-bottom:16px}
-.add input{width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:8px}
-.add select{width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:8px}
+.add input,.add select{width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:8px}
 .btn{background:#1e40af;color:white;border:none;padding:12px;border-radius:8px;width:100%;font-weight:bold}
-.item{background:white;padding:12px;margin-bottom:6px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-.badge{padding:3px 8px;border-radius:12px;color:white;font-size:12px}
+.item{background:white;padding:12px;margin-bottom:6px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.nombre{font-weight:600;flex:1}
+.badge{padding:3px 8px;border-radius:12px;color:white;font-size:12px;white-space:nowrap}
 .isola{background:#7c3aed}.lago{background:#0891b2}.bassa{background:#d97706}.centro{background:#059669}
+select.cambio{padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:14px;max-width:100px}
 </style>
 </head>
 <body>
@@ -29,12 +30,12 @@ input,select,button{font-size:16px}
   <div style="font-size:14px;opacity:0.9">Separación de mercancía · Magazzino</div>
 </div>
 <div class="container">
-  <input class="search" id="buscar" placeholder="Buscar comune...">
+  <input class="search" id="buscar" placeholder="Buscar comune..." oninput="dibujar()">
   <div class="tabs">
-    <div class="tab active" onclick="cambiarZona('isola')">Isola</div>
-    <div class="tab" onclick="cambiarZona('lago')">Lago</div>
-    <div class="tab" onclick="cambiarZona('bassa')">Bassa</div>
-    <div class="tab" onclick="cambiarZona('centro')">Centro</div>
+    <div class="tab active" id="tab-isola" onclick="cambiarZona('isola')">Isola</div>
+    <div class="tab" id="tab-lago" onclick="cambiarZona('lago')">Lago</div>
+    <div class="tab" id="tab-bassa" onclick="cambiarZona('bassa')">Bassa</div>
+    <div class="tab" id="tab-centro" onclick="cambiarZona('centro')">Centro</div>
   </div>
   <div class="add">
     <div style="font-weight:bold;margin-bottom:8px">➕ Agregar ciudad</div>
@@ -62,53 +63,86 @@ let zona = "isola";
 function cambiarZona(z) {
   zona = z;
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  event.target.classList.add("active");
+  document.getElementById("tab-"+z).classList.add("active");
+  document.getElementById("buscar").value = "";
   dibujar();
 }
 
 function dibujar() {
-  const q = document.getElementById("buscar").value.toLowerCase();
+  const q = document.getElementById("buscar").value.trim().toLowerCase();
   let html = "";
-  // Si hay búsqueda, buscar en todas las zonas
+
   if (q) {
+    // Búsqueda global: muestra nombre + zona + selector para cambiar
     for (let z in datos) {
       datos[z].forEach(n => {
         if (n.toLowerCase().includes(q)) {
-          html += `<div class="item"><div><b>${n}</b><br><span class="badge \( {z}"> \){z.charAt(0).toUpperCase()+z.slice(1)}</span></div></div>`;
+          html += `<div class="item">
+            <div>
+              <div class="nombre">${n}</div>
+              <span class="badge \( {z}"> \){z.charAt(0).toUpperCase() + z.slice(1)}</span>
+            </div>
+            <select class="cambio" onchange="mover('${n}', this.value)">
+              <option value="isola" ${z==="isola"?"selected":""}>Isola</option>
+              <option value="lago" ${z==="lago"?"selected":""}>Lago</option>
+              <option value="bassa" ${z==="bassa"?"selected":""}>Bassa</option>
+              <option value="centro" ${z==="centro"?"selected":""}>Centro</option>
+            </select>
+          </div>`;
         }
       });
     }
   } else {
-    // Mostrar solo la zona actual
+    // Lista de la zona actual + selector para cambiar
     datos[zona].forEach(n => {
-      html += `<div class="item"><span>${n}</span></div>`;
+      html += `<div class="item">
+        <span class="nombre">${n}</span>
+        <select class="cambio" onchange="mover('${n}', this.value)">
+          <option value="isola" ${zona==="isola"?"selected":""}>Isola</option>
+          <option value="lago" ${zona==="lago"?"selected":""}>Lago</option>
+          <option value="bassa" ${zona==="bassa"?"selected":""}>Bassa</option>
+          <option value="centro" ${zona==="centro"?"selected":""}>Centro</option>
+        </select>
+      </div>`;
     });
   }
+
   document.getElementById("lista").innerHTML = html || "<div style='text-align:center;padding:20px;color:#666'>No hay resultados</div>";
+}
+
+function mover(nombre, nuevaZona) {
+  // Quitar de todas las zonas
+  for (let z in datos) {
+    datos[z] = datos[z].filter(n => n !== nombre);
+  }
+  // Agregar a la nueva
+  datos[nuevaZona].push(nombre);
+  datos[nuevaZona].sort((a,b) => a.localeCompare(b));
+  alert(nombre + " movido a " + nuevaZona.charAt(0).toUpperCase() + nuevaZona.slice(1));
+  dibujar();
 }
 
 function agregar() {
   const nombre = document.getElementById("nuevo").value.trim();
   const z = document.getElementById("zonaNueva").value;
   if (!nombre) {
-    alert("Escribe el nombre");
+    alert("Escribe el nombre del comune");
     return;
   }
   // Evitar duplicados
   for (let zona in datos) {
-    if (datos[zona].includes(nombre)) {
+    if (datos[zona].some(n => n.toLowerCase() === nombre.toLowerCase())) {
       alert("Ese comune ya existe");
       return;
     }
   }
   datos[z].push(nombre);
-  datos[z].sort();
+  datos[z].sort((a,b) => a.localeCompare(b));
   document.getElementById("nuevo").value = "";
-  alert(nombre + " agregado a " + z);
+  alert(nombre + " agregado a " + z.charAt(0).toUpperCase() + z.slice(1));
   dibujar();
 }
 
-document.getElementById("buscar").oninput = dibujar;
 dibujar();
 </script>
 </body>
