@@ -38,4 +38,78 @@ input,select,button{font-size:16px}
   </div>
   <div class="add">
     <div style="font-weight:bold;margin-bottom:8px">➕ Agregar ciudad</div>
-    <input type="text" id="nuevo"
+    <input type="text" id="nuevo" placeholder="Nombre del comune">
+    <select id="zonaNueva">
+      <option value="isola">Isola</option>
+      <option value="lago">Lago</option>
+      <option value="bassa">Bassa</option>
+      <option value="centro">Centro</option>
+    </select>
+    <button class="btn" onclick="agregar()">Agregar a la zona</button>
+  </div>
+  <div id="lista"></div>
+</div>
+<script>
+const datos = {
+  isola: ["Ambivere","Bonate Sopra","Bonate Sotto","Bottanuco","Brembate","Brembate di Sopra","Calusco d'Adda","Capriate San Gervasio","Caprino Bergamasco","Carvico","Chignolo d'Isola","Cisano Bergamasco","Filago","Madone","Mapello","Medolago","Ponte San Pietro","Pontida","Presezzo","Solza","Sotto il Monte Giovanni XXIII","Suisio","Terno d'Isola","Villa d'Adda"],
+  lago: ["Adrara San Martino","Adrara San Rocco","Berzo San Fermo","Bianzano","Borgo di Terzo","Bossico","Carobbio degli Angeli","Casazza","Castro","Cenate Sopra","Cenate Sotto","Costa Volpino","Credaro","Endine Gaiano","Entratico","Fonteno","Foresto Sparso","Gandosso","Gaverina Terme","Gorlago","Grone","Lovere","Luzzana","Monasterolo del Castello","Parzanica","Pianico","Predore","Ranzanico","Riva di Solto","Rogno","San Paolo d'Argon","Sarnico","Solto Collina","Sovere","Spinone al Lago","Tavernola Bergamasca","Trescore Balneario","Viadanica","Vigano San Martino","Vigolo","Villongo","Zandobbio"],
+  centro: ["Almè","Alzano Lombardo","Azzano San Paolo","Bergamo","Curno","Gorle","Lallio","Mozzo","Nembro","Orio al Serio","Paladina","Pedrengo","Ponteranica","Pradalunga","Ranica","Scanzorosciate","Sorisole","Stezzano","Torre Boldone","Treviolo","Valbrembo","Villa d'Almè","Villa di Serio","Seriate","Grassobbio","Brusaporto","Bagnatica"],
+  bassa: ["Treviglio","Caravaggio","Romano di Lombardia","Dalmine","Osio Sopra","Osio Sotto","Verdello","Verdellino","Zanica","Cologno al Serio","Martinengo","Calcinate","Bolgare","Telgate","Urgnano","Ciserano","Boltiere","Levate","Comun Nuovo","Arcene","Lurano","Pognano","Spirano","Pontirolo Nuovo","Canonica d'Adda","Fara Gera d'Adda","Casirate d'Adda","Arzago d'Adda","Castel Rozzone","Brignano Gera d'Adda","Calvenzano","Misano di Gera d'Adda","Mozzanica","Bariano","Morengo","Pagazzano","Fornovo San Giovanni","Antegnate","Barbata","Calcio","Cividate al Piano","Cortenuova","Covo","Fara Olivana con Sola","Fontanella","Ghisalba","Isso","Mornico al Serio","Palosco","Pumenengo","Torre Pallavicina","Cavernago","Costa di Mezzate"]
+};
+
+let zona = "isola";
+
+function cambiarZona(z) {
+  zona = z;
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  event.target.classList.add("active");
+  dibujar();
+}
+
+function dibujar() {
+  const q = document.getElementById("buscar").value.toLowerCase();
+  let html = "";
+  // Si hay búsqueda, buscar en todas las zonas
+  if (q) {
+    for (let z in datos) {
+      datos[z].forEach(n => {
+        if (n.toLowerCase().includes(q)) {
+          html += `<div class="item"><div><b>${n}</b><br><span class="badge \( {z}"> \){z.charAt(0).toUpperCase()+z.slice(1)}</span></div></div>`;
+        }
+      });
+    }
+  } else {
+    // Mostrar solo la zona actual
+    datos[zona].forEach(n => {
+      html += `<div class="item"><span>${n}</span></div>`;
+    });
+  }
+  document.getElementById("lista").innerHTML = html || "<div style='text-align:center;padding:20px;color:#666'>No hay resultados</div>";
+}
+
+function agregar() {
+  const nombre = document.getElementById("nuevo").value.trim();
+  const z = document.getElementById("zonaNueva").value;
+  if (!nombre) {
+    alert("Escribe el nombre");
+    return;
+  }
+  // Evitar duplicados
+  for (let zona in datos) {
+    if (datos[zona].includes(nombre)) {
+      alert("Ese comune ya existe");
+      return;
+    }
+  }
+  datos[z].push(nombre);
+  datos[z].sort();
+  document.getElementById("nuevo").value = "";
+  alert(nombre + " agregado a " + z);
+  dibujar();
+}
+
+document.getElementById("buscar").oninput = dibujar;
+dibujar();
+</script>
+</body>
+</html>
