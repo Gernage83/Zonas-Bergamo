@@ -51,14 +51,27 @@ select.cambio{padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:
   <div id="lista"></div>
 </div>
 <script>
-const datos = {
+const INICIAL = {
   isola: ["Ambivere","Bonate Sopra","Bonate Sotto","Bottanuco","Brembate","Brembate di Sopra","Calusco d'Adda","Capriate San Gervasio","Caprino Bergamasco","Carvico","Chignolo d'Isola","Cisano Bergamasco","Filago","Madone","Mapello","Medolago","Ponte San Pietro","Pontida","Presezzo","Solza","Sotto il Monte Giovanni XXIII","Suisio","Terno d'Isola","Villa d'Adda"],
   lago: ["Adrara San Martino","Adrara San Rocco","Berzo San Fermo","Bianzano","Borgo di Terzo","Bossico","Carobbio degli Angeli","Casazza","Castro","Cenate Sopra","Cenate Sotto","Costa Volpino","Credaro","Endine Gaiano","Entratico","Fonteno","Foresto Sparso","Gandosso","Gaverina Terme","Gorlago","Grone","Lovere","Luzzana","Monasterolo del Castello","Parzanica","Pianico","Predore","Ranzanico","Riva di Solto","Rogno","San Paolo d'Argon","Sarnico","Solto Collina","Sovere","Spinone al Lago","Tavernola Bergamasca","Trescore Balneario","Viadanica","Vigano San Martino","Vigolo","Villongo","Zandobbio"],
   centro: ["Almè","Alzano Lombardo","Azzano San Paolo","Bergamo","Curno","Gorle","Lallio","Mozzo","Nembro","Orio al Serio","Paladina","Pedrengo","Ponteranica","Pradalunga","Ranica","Scanzorosciate","Sorisole","Stezzano","Torre Boldone","Treviolo","Valbrembo","Villa d'Almè","Villa di Serio","Seriate","Grassobbio","Brusaporto","Bagnatica"],
   bassa: ["Treviglio","Caravaggio","Romano di Lombardia","Dalmine","Osio Sopra","Osio Sotto","Verdello","Verdellino","Zanica","Cologno al Serio","Martinengo","Calcinate","Bolgare","Telgate","Urgnano","Ciserano","Boltiere","Levate","Comun Nuovo","Arcene","Lurano","Pognano","Spirano","Pontirolo Nuovo","Canonica d'Adda","Fara Gera d'Adda","Casirate d'Adda","Arzago d'Adda","Castel Rozzone","Brignano Gera d'Adda","Calvenzano","Misano di Gera d'Adda","Mozzanica","Bariano","Morengo","Pagazzano","Fornovo San Giovanni","Antegnate","Barbata","Calcio","Cividate al Piano","Cortenuova","Covo","Fara Olivana con Sola","Fontanella","Ghisalba","Isso","Mornico al Serio","Palosco","Pumenengo","Torre Pallavicina","Cavernago","Costa di Mezzate"]
 };
 
+let datos = JSON.parse(JSON.stringify(INICIAL));
 let zona = "isola";
+
+// Cargar datos guardados
+try {
+  const guardado = localStorage.getItem("zonas-bergamo-final");
+  if (guardado) datos = JSON.parse(guardado);
+} catch(e) {}
+
+function guardar() {
+  try {
+    localStorage.setItem("zonas-bergamo-final", JSON.stringify(datos));
+  } catch(e) {}
+}
 
 function cambiarZona(z) {
   zona = z;
@@ -73,7 +86,6 @@ function dibujar() {
   let html = "";
 
   if (q) {
-    // Búsqueda global: muestra nombre + zona + selector para cambiar
     for (let z in datos) {
       datos[z].forEach(n => {
         if (n.toLowerCase().includes(q)) {
@@ -93,7 +105,6 @@ function dibujar() {
       });
     }
   } else {
-    // Lista de la zona actual + selector para cambiar
     datos[zona].forEach(n => {
       html += `<div class="item">
         <span class="nombre">${n}</span>
@@ -111,13 +122,12 @@ function dibujar() {
 }
 
 function mover(nombre, nuevaZona) {
-  // Quitar de todas las zonas
   for (let z in datos) {
     datos[z] = datos[z].filter(n => n !== nombre);
   }
-  // Agregar a la nueva
   datos[nuevaZona].push(nombre);
   datos[nuevaZona].sort((a,b) => a.localeCompare(b));
+  guardar();
   alert(nombre + " movido a " + nuevaZona.charAt(0).toUpperCase() + nuevaZona.slice(1));
   dibujar();
 }
@@ -129,7 +139,6 @@ function agregar() {
     alert("Escribe el nombre del comune");
     return;
   }
-  // Evitar duplicados
   for (let zona in datos) {
     if (datos[zona].some(n => n.toLowerCase() === nombre.toLowerCase())) {
       alert("Ese comune ya existe");
@@ -138,6 +147,7 @@ function agregar() {
   }
   datos[z].push(nombre);
   datos[z].sort((a,b) => a.localeCompare(b));
+  guardar();
   document.getElementById("nuevo").value = "";
   alert(nombre + " agregado a " + z.charAt(0).toUpperCase() + z.slice(1));
   dibujar();
