@@ -6,156 +6,31 @@
   <title>Zonas Bergamo - Magazzino</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f1f5f9;
-      color: #0f172a;
-      padding-bottom: 40px;
-    }
-    .header {
-      background: linear-gradient(135deg, #1e40af, #1e3a8a);
-      color: white;
-      padding: 18px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f1f5f9; color: #0f172a; padding-bottom: 40px; }
+    .header { background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; padding: 18px 16px; position: sticky; top: 0; z-index: 50; }
     .header h1 { font-size: 1.3rem; margin-bottom: 2px; }
     .header p { font-size: 0.85rem; opacity: 0.9; }
     .container { max-width: 640px; margin: 0 auto; padding: 16px; }
-
     .search-box { margin-bottom: 16px; position: relative; }
-    .search-box input {
-      width: 100%;
-      padding: 14px 16px 14px 42px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 1rem;
-      outline: none;
-    }
+    .search-box input { width: 100%; padding: 14px 16px 14px 42px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; outline: none; }
     .search-box input:focus { border-color: #1e40af; }
-    .search-box::before {
-      content: "🔍";
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
+    .search-box::before { content: "🔍"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); }
     .results { margin-bottom: 20px; }
-    .result-card, .comune-item {
-      background: white;
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
+    .result-card, .comune-item { background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     .result-name, .comune-name { font-weight: 600; flex: 1; }
-    .zone-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: white;
-    }
-    .badge-isola { background: #7c3aed; }
-    .badge-lago { background: #0891b2; }
-    .badge-bassa { background: #d97706; }
-    .badge-centro { background: #059669; }
-
-    select {
-      padding: 7px 8px;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      font-size: 0.85rem;
-      max-width: 130px;
-      background: white;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .tab {
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 10px 4px;
-      text-align: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #64748b;
-      cursor: pointer;
-    }
-    .tab.active {
-      border-color: #1e40af;
-      background: #eff6ff;
-      color: #1e40af;
-    }
-    .tab .count {
-      display: block;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-top: 2px;
-    }
-
-    .zone-section { display: none; }
-    .zone-section.active { display: block; }
-    .zone-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #0f172a;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      opacity: 0;
-      transition: all 0.3s;
-      z-index: 100;
-      max-width: 90%;
-      text-align: center;
-    }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-top: 24px;
-    }
-    .btn-reset {
-      margin-top: 12px;
-      background: transparent;
-      border: 1px solid #dc2626;
-      color: #dc2626;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      width: 100%;
-      cursor: pointer;
-    }
+    .zone-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; color: white; }
+    .badge-isola { background: #7c3aed; } .badge-lago { background: #0891b2; } .badge-bassa { background: #d97706; } .badge-centro { background: #059669; }
+    select { padding: 7px 8px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.85rem; max-width: 130px; background: white; }
+    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .tab { background: white; border: 2px solid #e2e8f0; border-radius: 10px; padding: 10px 4px; text-align: center; font-size: 0.8rem; font-weight: 600; color: #64748b; cursor: pointer; }
+    .tab.active { border-color: #1e40af; background: #eff6ff; color: #1e40af; }
+    .tab .count { display: block; font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-top: 2px; }
+    .zone-section { display: none; } .zone-section.active { display: block; }
+    .zone-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #0f172a; color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; opacity: 0; transition: all 0.3s; z-index: 100; max-width: 90%; text-align: center; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .footer { text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 24px; }
+    .btn-reset { margin-top: 12px; background: transparent; border: 1px solid #dc2626; color: #dc2626; padding: 10px 16px; border-radius: 8px; font-size: 0.85rem; width: 100%; cursor: pointer; }
     .empty { text-align: center; color: #64748b; padding: 24px 10px; }
   </style>
 </head>
@@ -163,4 +38,44 @@
   <div class="header">
     <h1>📦 Zonas Bergamo</h1>
     <p>Separación de mercancía · Magazzino</p>
-... 
+  </div>
+  <div class="container">
+    <div class="search-box"><input type="text" id="searchInput" placeholder="Buscar comune..." autocomplete="off"></div>
+    <div class="results" id="results"></div>
+    <div class="tabs">
+      <div class="tab active" data-zone="Zona Isola">Isola<span class="count" id="count-isola">0</span></div>
+      <div class="tab" data-zone="Zona Lago">Lago<span class="count" id="count-lago">0</span></div>
+      <div class="tab" data-zone="Zona Bassa">Bassa<span class="count" id="count-bassa">0</span></div>
+      <div class="tab" data-zone="Zona Centro">Centro<span class="count" id="count-centro">0</span></div>
+    </div>
+    <div id="zone-isola" class="zone-section active"><div class="zone-title"><span class="zone-badge badge-isola">Isola</span> Zona Isola</div><div id="list-isola"></div></div>
+    <div id="zone-lago" class="zone-section"><div class="zone-title"><span class="zone-badge badge-lago">Lago</span> Zona Lago</div><div id="list-lago"></div></div>
+    <div id="zone-bassa" class="zone-section"><div class="zone-title"><span class="zone-badge badge-bassa">Bassa</span> Zona Bassa</div><div id="list-bassa"></div></div>
+    <div id="zone-centro" class="zone-section"><div class="zone-title"><span class="zone-badge badge-centro">Centro</span> Zona Centro</div><div id="list-centro"></div></div>
+    <div class="footer">Los cambios se guardan automáticamente.<button class="btn-reset" id="btnReset">Restablecer datos originales</button></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const ZONES = ["Zona Isola","Zona Lago","Zona Bassa","Zona Centro"];
+    const INITIAL_DATA = [
+      {name:"Ambivere",zone:"Zona Isola"},{name:"Bonate Sopra",zone:"Zona Isola"},{name:"Bonate Sotto",zone:"Zona Isola"},{name:"Bottanuco",zone:"Zona Isola"},{name:"Brembate",zone:"Zona Isola"},{name:"Brembate di Sopra",zone:"Zona Isola"},{name:"Calusco d'Adda",zone:"Zona Isola"},{name:"Capriate San Gervasio",zone:"Zona Isola"},{name:"Caprino Bergamasco",zone:"Zona Isola"},{name:"Carvico",zone:"Zona Isola"},{name:"Chignolo d'Isola",zone:"Zona Isola"},{name:"Cisano Bergamasco",zone:"Zona Isola"},{name:"Filago",zone:"Zona Isola"},{name:"Madone",zone:"Zona Isola"},{name:"Mapello",zone:"Zona Isola"},{name:"Medolago",zone:"Zona Isola"},{name:"Ponte San Pietro",zone:"Zona Isola"},{name:"Pontida",zone:"Zona Isola"},{name:"Presezzo",zone:"Zona Isola"},{name:"Solza",zone:"Zona Isola"},{name:"Sotto il Monte Giovanni XXIII",zone:"Zona Isola"},{name:"Suisio",zone:"Zona Isola"},{name:"Terno d'Isola",zone:"Zona Isola"},{name:"Villa d'Adda",zone:"Zona Isola"},
+      {name:"Adrara San Martino",zone:"Zona Lago"},{name:"Adrara San Rocco",zone:"Zona Lago"},{name:"Berzo San Fermo",zone:"Zona Lago"},{name:"Bianzano",zone:"Zona Lago"},{name:"Borgo di Terzo",zone:"Zona Lago"},{name:"Bossico",zone:"Zona Lago"},{name:"Carobbio degli Angeli",zone:"Zona Lago"},{name:"Casazza",zone:"Zona Lago"},{name:"Castro",zone:"Zona Lago"},{name:"Cenate Sopra",zone:"Zona Lago"},{name:"Cenate Sotto",zone:"Zona Lago"},{name:"Costa Volpino",zone:"Zona Lago"},{name:"Credaro",zone:"Zona Lago"},{name:"Endine Gaiano",zone:"Zona Lago"},{name:"Entratico",zone:"Zona Lago"},{name:"Fonteno",zone:"Zona Lago"},{name:"Foresto Sparso",zone:"Zona Lago"},{name:"Gandosso",zone:"Zona Lago"},{name:"Gaverina Terme",zone:"Zona Lago"},{name:"Gorlago",zone:"Zona Lago"},{name:"Grone",zone:"Zona Lago"},{name:"Lovere",zone:"Zona Lago"},{name:"Luzzana",zone:"Zona Lago"},{name:"Monasterolo del Castello",zone:"Zona Lago"},{name:"Parzanica",zone:"Zona Lago"},{name:"Pianico",zone:"Zona Lago"},{name:"Predore",zone:"Zona Lago"},{name:"Ranzanico",zone:"Zona Lago"},{name:"Riva di Solto",zone:"Zona Lago"},{name:"Rogno",zone:"Zona Lago"},{name:"San Paolo d'Argon",zone:"Zona Lago"},{name:"Sarnico",zone:"Zona Lago"},{name:"Solto Collina",zone:"Zona Lago"},{name:"Sovere",zone:"Zona Lago"},{name:"Spinone al Lago",zone:"Zona Lago"},{name:"Tavernola Bergamasca",zone:"Zona Lago"},{name:"Trescore Balneario",zone:"Zona Lago"},{name:"Viadanica",zone:"Zona Lago"},{name:"Vigano San Martino",zone:"Zona Lago"},{name:"Vigolo",zone:"Zona Lago"},{name:"Villongo",zone:"Zona Lago"},{name:"Zandobbio",zone:"Zona Lago"},
+      {name:"Almè",zone:"Zona Centro"},{name:"Alzano Lombardo",zone:"Zona Centro"},{name:"Azzano San Paolo",zone:"Zona Centro"},{name:"Bergamo",zone:"Zona Centro"},{name:"Curno",zone:"Zona Centro"},{name:"Gorle",zone:"Zona Centro"},{name:"Lallio",zone:"Zona Centro"},{name:"Mozzo",zone:"Zona Centro"},{name:"Nembro",zone:"Zona Centro"},{name:"Orio al Serio",zone:"Zona Centro"},{name:"Paladina",zone:"Zona Centro"},{name:"Pedrengo",zone:"Zona Centro"},{name:"Ponteranica",zone:"Zona Centro"},{name:"Pradalunga",zone:"Zona Centro"},{name:"Ranica",zone:"Zona Centro"},{name:"Scanzorosciate",zone:"Zona Centro"},{name:"Sorisole",zone:"Zona Centro"},{name:"Stezzano",zone:"Zona Centro"},{name:"Torre Boldone",zone:"Zona Centro"},{name:"Treviolo",zone:"Zona Centro"},{name:"Valbrembo",zone:"Zona Centro"},{name:"Villa d'Almè",zone:"Zona Centro"},{name:"Villa di Serio",zone:"Zona Centro"},{name:"Seriate",zone:"Zona Centro"},{name:"Grassobbio",zone:"Zona Centro"},{name:"Brusaporto",zone:"Zona Centro"},{name:"Bagnatica",zone:"Zona Centro"},
+      {name:"Treviglio",zone:"Zona Bassa"},{name:"Caravaggio",zone:"Zona Bassa"},{name:"Romano di Lombardia",zone:"Zona Bassa"},{name:"Dalmine",zone:"Zona Bassa"},{name:"Osio Sopra",zone:"Zona Bassa"},{name:"Osio Sotto",zone:"Zona Bassa"},{name:"Verdello",zone:"Zona Bassa"},{name:"Verdellino",zone:"Zona Bassa"},{name:"Zanica",zone:"Zona Bassa"},{name:"Cologno al Serio",zone:"Zona Bassa"},{name:"Martinengo",zone:"Zona Bassa"},{name:"Calcinate",zone:"Zona Bassa"},{name:"Bolgare",zone:"Zona Bassa"},{name:"Telgate",zone:"Zona Bassa"},{name:"Urgnano",zone:"Zona Bassa"},{name:"Ciserano",zone:"Zona Bassa"},{name:"Boltiere",zone:"Zona Bassa"},{name:"Levate",zone:"Zona Bassa"},{name:"Comun Nuovo",zone:"Zona Bassa"},{name:"Arcene",zone:"Zona Bassa"},{name:"Lurano",zone:"Zona Bassa"},{name:"Pognano",zone:"Zona Bassa"},{name:"Spirano",zone:"Zona Bassa"},{name:"Pontirolo Nuovo",zone:"Zona Bassa"},{name:"Canonica d'Adda",zone:"Zona Bassa"},{name:"Fara Gera d'Adda",zone:"Zona Bassa"},{name:"Casirate d'Adda",zone:"Zona Bassa"},{name:"Arzago d'Adda",zone:"Zona Bassa"},{name:"Castel Rozzone",zone:"Zona Bassa"},{name:"Brignano Gera d'Adda",zone:"Zona Bassa"},{name:"Calvenzano",zone:"Zona Bassa"},{name:"Misano di Gera d'Adda",zone:"Zona Bassa"},{name:"Mozzanica",zone:"Zona Bassa"},{name:"Bariano",zone:"Zona Bassa"},{name:"Morengo",zone:"Zona Bassa"},{name:"Pagazzano",zone:"Zona Bassa"},{name:"Fornovo San Giovanni",zone:"Zona Bassa"},{name:"Antegnate",zone:"Zona Bassa"},{name:"Barbata",zone:"Zona Bassa"},{name:"Calcio",zone:"Zona Bassa"},{name:"Cividate al Piano",zone:"Zona Bassa"},{name:"Cortenuova",zone:"Zona Bassa"},{name:"Covo",zone:"Zona Bassa"},{name:"Fara Olivana con Sola",zone:"Zona Bassa"},{name:"Fontanella",zone:"Zona Bassa"},{name:"Ghisalba",zone:"Zona Bassa"},{name:"Isso",zone:"Zona Bassa"},{name:"Mornico al Serio",zone:"Zona Bassa"},{name:"Palosco",zone:"Zona Bassa"},{name:"Pumenengo",zone:"Zona Bassa"},{name:"Torre Pallavicina",zone:"Zona Bassa"},{name:"Cavernago",zone:"Zona Bassa"},{name:"Costa di Mezzate",zone:"Zona Bassa"}
+    ];
+    let comuni = [];
+    function saveData(){ try{ localStorage.setItem("zonas-bergamo-v2",JSON.stringify(comuni)); }catch(e){} }
+    function loadData(){ try{ const s=localStorage.getItem("zonas-bergamo-v2"); if(s){ comuni=JSON.parse(s); return; } }catch(e){} comuni=JSON.parse(JSON.stringify(INITIAL_DATA)); saveData(); }
+    function showToast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2000); }
+    function getBadge(z){ if(z.includes("Isola"))return"badge-isola"; if(z.includes("Lago"))return"badge-lago"; if(z.includes("Bassa"))return"badge-bassa"; return"badge-centro"; }
+    function updateCounts(){ const c={"Zona Isola":0,"Zona Lago":0,"Zona Bassa":0,"Zona Centro":0}; comuni.forEach(x=>c[x.zone]++); document.getElementById("count-isola").textContent=c["Zona Isola"]; document.getElementById("count-lago").textContent=c["Zona Lago"]; document.getElementById("count-bassa").textContent=c["Zona Bassa"]; document.getElementById("count-centro").textContent=c["Zona Centro"]; }
+    function renderList(id,zone){ const list=document.getElementById(id); const items=comuni.filter(c=>c.zone===zone).sort((a,b)=>a.name.localeCompare(b.name,"it")); if(items.length===0){ list.innerHTML='<div class="empty">No hay comunes</div>'; return; } list.innerHTML=items.map(c=>`<div class="comune-item"><span class="comune-name">\( {c.name}</span><select data-name=" \){c.name}">\( {ZONES.map(z=>`<option value=" \){z}" \( {z===c.zone?"selected":""}> \){z.replace("Zona ","")}</option>`).join("")}</select></div>`).join(""); }
+    function renderAll(){ renderList("list-isola","Zona Isola"); renderList("list-lago","Zona Lago"); renderList("list-bassa","Zona Bassa"); renderList("list-centro","Zona Centro"); updateCounts(); }
+    document.querySelectorAll(".tab").forEach(tab=>{ tab.addEventListener("click",()=>{ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active")); tab.classList.add("active"); const z=tab.dataset.zone; document.querySelectorAll(".zone-section").forEach(s=>s.classList.remove("active")); if(z==="Zona Isola")document.getElementById("zone-isola").classList.add("active"); if(z==="Zona Lago")document.getElementById("zone-lago").classList.add("active"); if(z==="Zona Bassa")document.getElementById("zone-bassa").classList.add("active"); if(z==="Zona Centro")document.getElementById("zone-centro").classList.add("active"); }); });
+    document.addEventListener("change",e=>{ if(e.target.tagName==="SELECT"&&e.target.dataset.name){ const name=e.target.dataset.name; const newZone=e.target.value; const c=comuni.find(x=>x.name===name); if(c&&c.zone!==newZone){ c.zone=newZone; saveData(); renderAll(); showToast(name+" → "+newZone.replace("Zona ","")); } } });
+    document.getElementById("searchInput").addEventListener("input",function(){ const q=this.value.trim().toLowerCase(); const res=document.getElementById("results"); if(q.length<1){ res.innerHTML=""; return; } const m=comuni.filter(c=>c.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"it")).slice(0,10); if(m.length===0){ res.innerHTML='<div class="empty">No se encontró</div>'; return; } res.innerHTML=m.map(c=>`<div class="result-card"><div><div class="result-name">${c.name}</div><span class="zone-badge \( {getBadge(c.zone)}"> \){c.zone.replace("Zona ","")}</span></div><select data-name="\( {c.name}"> \){ZONES.map(z=>`<option value="${z}" \( {z===c.zone?"selected":""}> \){z.replace("Zona ","")}</option>`).join("")}</select></div>`).join(""); });
+    document.getElementById("btnReset").addEventListener("click",()=>{ if(confirm("¿Restablecer datos originales?")){ comuni=JSON.parse(JSON.stringify(INITIAL_DATA)); saveData(); renderAll(); document.getElementById("searchInput").value=""; document.getElementById("results").innerHTML=""; showToast("Datos restablecidos"); } });
+    loadData(); renderAll();
+  </script>
+</body>
+</html>
